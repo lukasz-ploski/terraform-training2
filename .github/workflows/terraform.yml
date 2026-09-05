@@ -1,0 +1,55 @@
+name: Terraform CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**/*.tf"
+      - "**/*.tfvars"
+      - ".github/workflows/terraform.yml"
+
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.tf"
+      - "**/*.tfvars"
+      - ".github/workflows/terraform.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  terraform-checks:
+    name: Format, validate and plan
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: environments/dev
+
+    steps:
+      - name: Pobranie repozytorium
+        uses: actions/checkout@v4
+
+      - name: Instalacja Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.14.6"
+
+      - name: Sprawdzenie wersji
+        run: terraform version
+
+      - name: Kontrola formatowania
+        run: terraform fmt -check -recursive ../..
+
+      - name: Inicjalizacja
+        run: terraform init -input=false
+
+      - name: Walidacja
+        run: terraform validate
+
+      - name: Utworzenie planu
+        run: terraform plan -input=false -no-color
