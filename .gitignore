@@ -1,0 +1,22 @@
+# Katalog roboczy Terraform
+**/.terraform/*
+
+# Pliki stanu
+*.tfstate
+*.tfstate.*
+
+# Zapisane plany
+*.tfplan
+tfplan
+
+# Pliki awarii
+crash.log
+crash.*.log
+
+# Pliki mogące zawierać poufne zmienne
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Konfiguracja Terraform CLI
+.terraformrc
+terraform.rc
